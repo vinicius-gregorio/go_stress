@@ -1,6 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 Vinicius Gregorio - vincamgreg@hotmail.com
 */
 package cmd
 
@@ -12,7 +11,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile      string
+	url          string
+	requestCount int64
+	concurrency  int64
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -26,7 +30,9 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		stressTestCmd.Run(cmd, args)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -47,9 +53,14 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.go_stress.yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().StringVar(&url, "url", "", "URL to be processed (required)")
+	rootCmd.PersistentFlags().Int64Var(&requestCount, "requestCount", 1, "Number of requests to be made (required)")
+	rootCmd.PersistentFlags().Int64Var(&concurrency, "concurrency", 1, "Number of concurrent requests to be made (required)")
+
+	rootCmd.MarkFlagRequired("url")
+	rootCmd.MarkFlagRequired("requestCount")
+	rootCmd.MarkFlagRequired("concurrency")
+
 }
 
 // initConfig reads in config file and ENV variables if set.

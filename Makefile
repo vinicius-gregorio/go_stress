@@ -1,7 +1,10 @@
-
-
 cobra:
-	cobra-cli add $(option)
+	cobra-cli add $(filter-out $@,$(MAKECMDGOALS))
 
+run:
+	go run main.go $(filter-out $@,$(MAKECMDGOALS))
 
-.PHONY: cobra
+.PHONY: cobra, run
+
+%:
+	@:
