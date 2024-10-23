@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+Copyright © 2024 Vinicius Gregorio - vincamgreg@hotmail.com
 */
 package cmd
 
@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/vinicius-gregorio/go_stress/internal"
 )
 
 // stressTestCmd represents the stressTest command
@@ -33,6 +34,11 @@ to quickly create a Cobra application.`,
 		fmt.Println("StressTest command: Request Count: ", requestCount)
 		fmt.Println("StressTest command: Concurrency: ", concurrency)
 		fmt.Println("StressTest command: URL: ", url)
+		st, err := internal.NewStressTest(url, requestCount, concurrency)
+		if err != nil {
+			fmt.Println(err)
+		}
+		st.Run()
 
 	},
 }

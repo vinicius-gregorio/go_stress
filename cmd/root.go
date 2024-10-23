@@ -54,11 +54,11 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.go_stress.yaml)")
 
 	rootCmd.PersistentFlags().StringVar(&url, "url", "", "URL to be processed (required)")
-	rootCmd.PersistentFlags().Int64Var(&requestCount, "requestCount", 1, "Number of requests to be made (required)")
+	rootCmd.PersistentFlags().Int64Var(&requestCount, "requests", 1, "Number of requests to be made (required)")
 	rootCmd.PersistentFlags().Int64Var(&concurrency, "concurrency", 1, "Number of concurrent requests to be made (required)")
 
 	rootCmd.MarkFlagRequired("url")
-	rootCmd.MarkFlagRequired("requestCount")
+	rootCmd.MarkFlagRequired("requests")
 	rootCmd.MarkFlagRequired("concurrency")
 
 }
