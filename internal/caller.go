@@ -17,7 +17,6 @@ func HttpCall(url string, requestNumber int64, logChannel chan<- RequestLog) {
 
 	// Perform the HTTP GET request
 	res, err := http.Get(url)
-	defer res.Body.Close()
 	if err != nil {
 		logChannel <- RequestLog{
 			StatusCode:       0,
@@ -28,6 +27,7 @@ func HttpCall(url string, requestNumber int64, logChannel chan<- RequestLog) {
 		}
 		return
 	}
+	defer res.Body.Close()
 
 	logChannel <- RequestLog{
 		StatusCode:       res.StatusCode,

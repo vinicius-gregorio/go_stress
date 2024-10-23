@@ -29,6 +29,7 @@ func NewStressTest(url string, requestCount, concurrency int64) (*StressTest, er
 
 // TODO: conclude run
 func (st *StressTest) Run() {
+	fl := NewFinalLog(st.URL, 0, 0, 0.0, st.RequestCount)
 	wg := sync.WaitGroup{}
 	logCN := make(chan RequestLog, st.Concurrency*st.RequestCount)
 	defer close(logCN)
@@ -36,21 +37,43 @@ func (st *StressTest) Run() {
 	go func() {
 		for log := range logCN {
 			fmt.Printf("Request %d received status code: %d, duration: %v\n", log.RequestNumber, log.StatusCode, log.RequestDuration)
+			/// This Calculates the success rate and final log
+			fl.TimeTaken += log.RequestDuration
+			fl.RequestsMade++
+			if log.StatusCode >= 200 && log.StatusCode < 300 {
+				fl.SuccessReqCount++
+			} else {
+				fl.AddErrorRequest(log.StatusCode)
+			}
+
 		}
 	}()
 
+	reqPerWorker := st.RequestCount / st.Concurrency
+	remainingReq := st.RequestCount % st.Concurrency
+
+	reqN := int64(0)
+
 	for i := int64(0); i < st.Concurrency; i++ {
 		wg.Add(1)
-		go func(i int64) {
+		go func(workerID int64) {
 			defer wg.Done()
-			for j := int64(0); j <= st.RequestCount; j++ {
-				HttpCall(st.URL, j, logCN)
+
+			reqForThisWorker := reqPerWorker
+			if workerID < remainingReq {
+				reqForThisWorker++
+			}
+
+			for j := int64(0); j <= reqForThisWorker; j++ {
+				HttpCall(st.URL, reqN, logCN)
+				reqN++
 			}
 		}(i)
 	}
 	fmt.Println("Waiting for all goroutines to finish...")
 	wg.Wait()
 	fmt.Println("Stress test completed")
+	fl.printLog()
 
 }
 
