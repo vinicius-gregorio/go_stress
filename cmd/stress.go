@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/vinicius-gregorio/go_stress/cmd/external"
 	"github.com/vinicius-gregorio/go_stress/internal"
 )
 
@@ -21,9 +22,10 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("stressTest called")
 		if url != "" {
-			fmt.Printf("StressTest command: Stress testing URL: %s\n", url)
+
+			external.PrintBox(fmt.Sprintf("Stress Testing URL: %s", url))
+
 		} else {
 			fmt.Println("StressTest command: No URL provided for stress test")
 		}
@@ -31,9 +33,6 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println("StressTest command: Request Count: ", requestCount)
-		fmt.Println("StressTest command: Concurrency: ", concurrency)
-		fmt.Println("StressTest command: URL: ", url)
 		st, err := internal.NewStressTest(url, requestCount, concurrency)
 		if err != nil {
 			fmt.Println(err)
@@ -62,10 +61,10 @@ func validateFlags() error {
 		return fmt.Errorf("URL is required")
 	}
 	if requestCount == 0 {
-		return fmt.Errorf("Request Count is required")
+		return fmt.Errorf("request Count is required")
 	}
 	if concurrency == 0 {
-		return fmt.Errorf("Concurrency is required")
+		return fmt.Errorf("concurrency is required")
 	}
 	return nil
 }
