@@ -16,7 +16,10 @@ notfound:
 random:
 	go run main.go --url=http://localhost:8080/random --concurrency=5 --requests=150
 
-.PHONY: cobra, run
+infinite:
+	go run main.go --url=http://localhost:8080/random --concurrency=5 --requests=1500000	
+
+.PHONY: cobra, run, normal, int, notfound, random, infinite
 
 %:
 	@:
