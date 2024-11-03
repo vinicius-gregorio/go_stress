@@ -1,4 +1,4 @@
-# Go Stress Testing CLI
+# Go Stress
 
 A simple and efficient CLI tool for stress-testing URLs. This tool simulates a high volume of requests to a specified URL and generates a detailed report at the end, including metrics such as success rate, duration, and number of requests processed.
 
