@@ -2,6 +2,9 @@
 
 A simple and efficient CLI tool for stress-testing URLs. This tool simulates a high volume of requests to a specified URL and generates a detailed report at the end, including metrics such as success rate, duration, and number of requests processed.
 
+![stresstest-gif](https://github.com/user-attachments/assets/9ed489bd-bbef-4eee-bb3f-2cb2766fd741)
+
+
 ## Docker Usage
 
 The stress-testing app is available as a Docker image, making it easy to run without installing Go locally.
